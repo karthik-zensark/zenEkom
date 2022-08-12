@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Spring Demo</title>
+</head>
+<body>
+<div>
+    <input type="text" id="userName" placeholder="Enter name" />
+    <br/>
+    <input type="text" id="email" placeholder="Enter email" />
+    <br/>
+    <button onclick="getUser()">submit</button>
+</div>
+<div id="result"></div>
+<script type="text/javascript">
+    function getUser(){
+        const userName = document.querySelector('#userName').value;
+        const email = document.querySelector('#email').value;
+
+        fetch(`/user/?userName=${userName}&email=${email}`)
+            .then(res=>res.json())
+            .then(res=>{document.querySelector('#result').innerText = JSON.stringify(res)})
+            .catch(console.log);
+    }
+</script>
+</body>
+</html>
