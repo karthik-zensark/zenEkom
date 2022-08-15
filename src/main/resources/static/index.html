@@ -1,28 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Spring Demo</title>
+<meta charset="UTF-8">
+<title>Spring EKOM</title>
+<script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-<div>
-    <input type="text" id="userName" placeholder="Enter name" />
-    <br/>
-    <input type="text" id="email" placeholder="Enter email" />
-    <br/>
-    <button onclick="getUser()">submit</button>
-</div>
-<div id="result"></div>
-<script type="text/javascript">
-    function getUser(){
-        const userName = document.querySelector('#userName').value;
-        const email = document.querySelector('#email').value;
+	<div class="flex p-10 justify-between">
 
-        fetch(`/user/?userName=${userName}&email=${email}`)
-            .then(res=>res.json())
-            .then(res=>{document.querySelector('#result').innerText = JSON.stringify(res)})
-            .catch(console.log);
-    }
-</script>
+		<div class="w-3/12 text-center">
+			<h1 class="text-2xl">Add A Product</h1>
+			<form class="p-5 flex flex-col items-start" id="create-product-form">
+				<label for="name">Product Name</label> <input type="text"
+					class="mt-1 h-12 text-lg p-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm border-gray-300 rounded-md"
+					id="name" placeholder="Enter product name" /> <label
+					for="description">Product Description</label>
+				<textarea
+					class="mt-1 text-lg p-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm border-gray-300 rounded-md"
+					id="description" placeholder="Enter product name"></textarea>
+
+				<label for="price">Product Price</label> <input type="text"
+					class="mt-1 h-12 text-lg p-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm border-gray-300 rounded-md"
+					id="price" placeholder="Enter product name" />
+
+				<button type="button" onclick="saveProduct()"
+					class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Save</button>
+			</form>
+		</div>
+
+		<div id="products" class="flex flex-1 flex-wrap gap-10 justify-center"></div>
+	</div>
+	<script type="text/javascript">
+	document.addEventListener('DOMContentLoaded', getAllProducts);
+	
+	function getAllProducts(){
+		fetch('/products/all')
+		.then(res => res.json())
+		.then(renderProducts)
+		.catch(console.error);
+	}
+	
+	function renderProducts(products){
+		if(products){
+			const productsEl = document.querySelector('#products');
+			productsEl.innerHTML = "";
+			products.forEach(function (product) {
+					productsEl.appendChild(renderProduct(product));
+				}
+			)
+		}
+	}
+	
+	function renderProduct(product){
+		const productEl = document.createElement('div');
+		productEl.classList.add('p-5', 'card', 'rounded-lg', 'shadow-lg', 'flex', 'flex-col', 'gap-5', 'w-80');
+		
+		const nameEl = document.createElement('p');
+		nameEl.classList.add('text-xl');
+		const descEl = document.createElement('p');
+		const priceEl = document.createElement('p');
+		
+		nameEl.innerText = product.name;
+		descEl.innerText = product.description;
+		priceEl.innerText = `£${product.price}`;
+		
+		productEl.appendChild(nameEl);
+		productEl.appendChild(descEl);
+		productEl.appendChild(priceEl);
+		
+		return productEl;
+	}
+	
+	function saveProduct(){
+		const name = document.querySelector('#name').value;
+		const description = document.querySelector('#description').value;
+		const price = document.querySelector('#price').value;
+		
+		fetch(`/products/create`, {
+				method:'POST',
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify({
+					name,
+					description,
+					price
+				})
+			}
+		)
+		.then(res => res.json())
+		.then(res => {
+			if(res){
+				document.querySelector('#create-product-form').reset();
+				getAllProducts();
+			}
+		})
+		.catch(console.error);
+	}
+	</script>
 </body>
 </html>
