@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Spring EKOM</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+<div class="flex p-10 justify-between">
+
+    <div class="w-3/12 text-center">
+        <h1 class="text-2xl">Add A Customer</h1>
+        <form class="p-5 flex flex-col items-start" id="create-customer-form">
+            <label for="firstName">First Name</label>
+            <input type="text" class="mt-1 h-12 text-lg p-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm border-gray-300 rounded-md" id="firstName" placeholder="Enter first name" />
+
+            <label
+                for="lastName">Last Name</label>
+            <input type="text" class="mt-1 h-12 text-lg p-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm border-gray-300 rounded-md" id="lastName" placeholder="Enter last name" />
+
+            <label for="email">Email</label>
+            <input type="email" class="mt-1 h-12 text-lg p-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm border-gray-300 rounded-md" id="email" placeholder="Enter email" />
+
+            <button type="button" onclick="saveCustomer()" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Save</button>
+        </form>
+    </div>
+
+    <div id="customers" class="flex flex-1 flex-wrap gap-10 justify-center"></div>
+</div>
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', getAllCustomers);
+
+    function getAllCustomers(){
+        fetch('/customer/all')
+            .then(res => res.json())
+            .then(renderCustomers)
+            .catch(console.error);
+    }
+
+    function renderCustomers(customers){
+        if(customers){
+            const customersEl = document.querySelector('#customers');
+            customersEl.innerHTML = "";
+            customers.forEach(function (customer) {
+                    customersEl.appendChild(renderCustomer(customer));
+                }
+            )
+        }
+    }
+
+    function renderCustomer(customer){
+        const customerEl = document.createElement('div');
+        customerEl.classList.add('p-5', 'card', 'rounded-lg', 'shadow-lg', 'flex', 'flex-col', 'gap-5', 'w-80');
+
+        const firstNameEl = document.createElement('p');
+        firstNameEl.classList.add('text-xl');
+        const lastNameEl = document.createElement('p');
+        const emailEl = document.createElement('p');
+
+        firstNameEl.innerText = customer.firstName;
+        lastNameEl.innerText = customer.lastName;
+        emailEl.innerText = customer.email;
+
+        customerEl.appendChild(firstNameEl);
+        customerEl.appendChild(lastNameEl);
+        customerEl.appendChild(emailEl);
+
+        return customerEl;
+    }
+
+    function saveCustomer(){
+        const firstName = document.querySelector('#firstName').value;
+        const lastName = document.querySelector('#lastName').value;
+        const email = document.querySelector('#email').value;
+
+        fetch(`/customer/create`, {
+                method:'POST',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    firstName,
+                    lastName,
+                    email
+                })
+            }
+        )
+            .then(res => res.json())
+            .then(res => {
+                if(res){
+                    document.querySelector('#create-customer-form').reset();
+                    getAllCustomers();
+                }
+            })
+            .catch(console.error);
+    }
+</script>
+</body>
+</html>
