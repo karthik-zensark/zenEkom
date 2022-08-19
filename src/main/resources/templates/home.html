@@ -6,35 +6,50 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-    <main class="flex gap-10 items-center p-10">
-        <a href="/logout">Logout</a>
-        <div class="flex flex-wrap gap-10">
-            <div class="card shadow-lg flex flex-col gap-5 p-5 w-80" th:each="product : ${products}">
-                <p th:text="${product.name}"></p>
-                <p th:text="${product.description}"></p>
-                <p th:text="${product.price}"></p>
-                <div class="flex justify-evenly">
-                    <a th:href="|/home/product/${product.id}/edit|" type="button" class="mt-5 group relative w-fit flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Edit</a>
+<header class="flex justify-end items-center px-5 py-2">
+    <span class="mr-5" th:text="${username}">Username</span>
+    <a href="/logout"
+       class="mt-5 group relative flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Logout</a>
+</header>
+<main class="flex gap-10 items-center p-10">
+    <div class="flex flex-wrap gap-10">
+        <div class="card shadow-lg flex flex-col gap-5 p-5 w-80" th:each="product : ${products}">
+            <p th:text="${product.name}"></p>
+            <p th:text="${product.description}"></p>
+            <p th:text="${product.price}"></p>
+            <div class="flex justify-evenly">
+                <a th:href="|/home/product/${product.id}/edit|" type="button"
+                   class="mt-5 group relative w-fit flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Edit</a>
 
-                    <a th:href="|/home/product/${product.id}/delete|" class="mt-5 group relative w-fit flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">Delete</a>
-                </div>
+                <a th:href="|/home/product/${product.id}/delete|"
+                   class="mt-5 group relative w-fit flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">Delete</a>
             </div>
         </div>
-        <div class="w-3/12 text-center">
-            <h1 class="text-2xl">Add A Product</h1>
-            <form class="p-5 flex flex-col items-start" method="post" action="home/product">
-                <label for="name">Product Name</label>
-                <input type="text" class="mt-1 h-12 text-lg p-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm border-gray-300 rounded-md" name="name" id="name" placeholder="Enter product name" />
+    </div>
+    <div class="w-3/12 text-center">
+        <h1 class="text-2xl">Add A Product</h1>
+        <form class="p-5 flex flex-col items-start" method="post" th:action="@{/home/product}">
+            <label for="name">Product Name</label>
+            <input type="text"
+                   class="mt-1 h-12 text-lg p-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm border-gray-300 rounded-md"
+                   name="name" id="name" placeholder="Enter product name"/>
 
-                <label for="description">Product Description</label>
-                <textarea class="mt-1 text-lg p-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm border-gray-300 rounded-md" name="description" id="description" placeholder="Enter product name"></textarea>
+            <label for="description">Product Description</label>
+            <textarea
+                    class="mt-1 text-lg p-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm border-gray-300 rounded-md"
+                    name="description" id="description" placeholder="Enter product name"></textarea>
 
-                <label for="price">Product Price</label>
-                <input type="text" class="mt-1 h-12 text-lg p-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm border-gray-300 rounded-md" name="price" id="price" placeholder="Enter product name" />
+            <label for="price">Product Price</label>
+            <input type="text"
+                   class="mt-1 h-12 text-lg p-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm border-gray-300 rounded-md"
+                   name="price" id="price" placeholder="Enter product name"/>
 
-                <button type="submit" class="mt-5 group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Save</button>
-            </form>
-        </div>
-    </main>
+            <button type="submit"
+                    class="mt-5 group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                Save
+            </button>
+        </form>
+    </div>
+</main>
 </body>
 </html>

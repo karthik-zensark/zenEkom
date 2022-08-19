@@ -1,17 +1,13 @@
 spring:
- datasource:
-  url: jdbc:h2:file:./spring-ekom
-  driverClassName: org.h2.Driver
-  username: db
-  password: db@123
+  datasource:
+    url: jdbc:h2:file:./spring-ekom
+    driverClassName: org.h2.Driver
+    username: db
+    password: db@123
 
- h2:
-  console:
-   enabled: true
- jpa:
-  hibernate:
-   ddl-auto: update
- security:
-  user:
-   name: zensark
-   password: java@123
+  h2:
+    console:
+      enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: update
