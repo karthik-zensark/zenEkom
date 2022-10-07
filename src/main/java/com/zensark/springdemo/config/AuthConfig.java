@@ -23,7 +23,18 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        super.configure(http);
+//    	http.csrf().disable();
+    	http.logout().logoutUrl("/logout").and()
+    	.authorizeRequests()
+        .antMatchers("/resources/**").permitAll()
+        .antMatchers("/login*").permitAll()
+        .anyRequest().authenticated()
+        .and()
+        .formLogin()
+        .loginPage("/login")
+        .defaultSuccessUrl("/home");
+//        .permitAll();
+//    	super.configure(http);
     }
 
     @Bean

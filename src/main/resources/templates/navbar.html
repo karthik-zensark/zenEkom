@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>NavigationBar</title>
+	<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+
+<nav th:fragment="navbar">
+        <div class="flex justify-evenly">
+        	<a class="pt-8 text-2xl" th:href="@{/home}">ZEN EKOM</a>
+            <a class="pt-8 text-xl" th:href="@{/home}">Home</a>
+            <a class="pt-8 text-xl" th:href="@{/products}">Products</a>
+			<a class="pt-8 text-xl" th:href="@{/employees}">Employees</a>
+        	<span class="pt-8 mr-5" th:text="${username}">Username</span>
+	        <a th:href="@{/goToLogout}"
+	       class="mt-5 group relative flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Logout</a>  
+        </div>
+</nav>
+
+</body>
+</html>
